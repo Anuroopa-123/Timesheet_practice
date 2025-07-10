@@ -1,32 +1,87 @@
-<h1>Timesheet List</h1>
+<div class="container">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Timesheet App</h2>
+    <ul>
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="#">Submit Timesheet</a></li>
+      <li><a href="#">Export Timesheet</a></li>
+    </ul>
+  </div>
 
-<div *ngIf="loading">Loading...</div>
-<div *ngIf="error">{{ error }}</div>
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <div class="header">
+      <h1>Weekly Timesheet Entry</h1>
+    </div>
 
-<!-- Timesheet Entry Form -->
-<div>
-  <h2>Enter Timesheet</h2>
-  <form (ngSubmit)="onSubmit()">
-    <label for="project_name">Project Name:</label>
-    <input type="text" id="project_name" [(ngModel)]="newTimesheet.project_name" name="project_name" required>
+    <!-- Timesheet Table -->
+    <div class="timesheet">
+      <form (ngSubmit)="submitTimesheet()">
+        <table class="timesheet-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Monday</th>
+              <th>Tuesday</th>
+              <th>Wednesday</th>
+              <th>Thursday</th>
+              <th>Friday</th>
+              <th>Saturaday</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let hour of hours">
+              <td>{{ hour }}</td>
+              <td>
+                <input
+                  [(ngModel)]="timesheet.monday[hour]"
+                  name="monday_{{ hour }}"
+                />
+              </td>
+              <td>
+                <input
+                  [(ngModel)]="timesheet.tuesday[hour]"
+                  name="tuesday_{{ hour }}"
+                />
+              </td>
+              <td>
+                <input
+                  [(ngModel)]="timesheet.wednesday[hour]"
+                  name="wednesday_{{ hour }}"
+                />
+              </td>
+              <td>
+                <input
+                  [(ngModel)]="timesheet.thursday[hour]"
+                  name="thursday_{{ hour }}"
+                />
+              </td>
+              <td>
+                <input
+                  [(ngModel)]="timesheet.friday[hour]"
+                  name="friday_{{ hour }}"
+                />
+              </td>
+              <td>
+                <input
+                  [(ngModel)]="timesheet.saturaday[hour]"
+                  name="saturaday_{{ hour }}"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-    <label for="date">Date:</label>
-    <input type="date" id="date" [(ngModel)]="newTimesheet.date" name="date" required>
+        <!-- Submit Button -->
+        <button type="submit">Submit Timesheet</button>
+      </form>
+    </div>
 
-    <label for="worked_hours">Worked Hours:</label>
-    <input type="number" id="worked_hours" [(ngModel)]="newTimesheet.worked_hours" name="worked_hours" required>
-
-    <label for="remarks">Remarks:</label>
-    <input type="text" id="remarks" [(ngModel)]="newTimesheet.remarks" name="remarks">
-
-    <button type="submit" [disabled]="!newTimesheet.project_name || !newTimesheet.date || !newTimesheet.worked_hours">Submit</button>
-  </form>
+    <!-- Footer -->
+    <div class="footer">
+      <p>© 2025 Timesheet App</p>
+    </div>
+  </div>
 </div>
-
-<!-- Timesheet List -->
-<ul *ngIf="!loading && !error">
-  <li *ngFor="let timesheet of timesheets; let i = index">
-    {{ timesheet.project_name }} - {{ timesheet.date }} - {{ timesheet.worked_hours }} hours - {{ timesheet.remarks }}
-    <button (click)="editTimesheet(i)">Edit</button>
-  </li>
-</ul>
